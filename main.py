@@ -1,7 +1,10 @@
 import random
 import time
+import os
 
-monthdict = ['Year 0; September','Year 0; October',' Year 0; November','Year 0; December',' Year 0; January','Year 0; February','Year 0; March','Year 0; April','Year 0; May','Year 0; June','Year 0; July','Year 0; August']
+monthdict = ['Year 0; September', 'Year 0; October', ' Year 0; November', 'Year 0; December', ' Year 0; January',
+             'Year 0; February', 'Year 0; March', 'Year 0; April', 'Year 0; May', 'Year 0; June', 'Year 0; July',
+             'Year 0; August']
 money = 10000
 soldier = 30
 men_power = 0
@@ -9,15 +12,13 @@ men_power = 0
 armor_level = 5
 armor_level_user = 0
 soldier_attack_power = 2 * soldier  # сделать 2 изменяемым через улчушения
-soldier_defense_power = armor_level * soldier  # сделать 5 изменяемым через улчушения
-
+soldier_defense_power = armor_level * soldier
 
 weapons = 5
 armor = 5
 starting_tax = 20
 money_lost = 0
 insurrection_points = 0
-
 
 soldier_AI = 20
 men_power_AI = 0
@@ -26,12 +27,16 @@ soldier_defense_power_AI = 5 * soldier_AI  # сделать 5 изменяемы
 weapons_AI = 0
 armor_AI = 0
 
+
 def print_slowly(text):
     for char in text:
         print(char, end='', flush=True)
-        time.sleep(0) # было  0.02
+        time.sleep(0.02)  # было  0.02
+
+
 def cls():
-    print('\n'*100)
+    os.system('cls')
+
 
 class Main:
     def options():
@@ -76,6 +81,7 @@ class Main:
                 cls()
                 print_slowly("Неверный выбор. Пожалуйста, введите корректное значение.\n")
                 optins_add()
+
     def suppress_insurrection():
         global money, starting_tax, soldier
 
@@ -89,20 +95,22 @@ class Main:
         print_slowly(f"Вы потратили {soldiers_cost * soldier} денег на {soldier} солдат.\n")
         print_slowly(f"Налог был снижен на 10%. Новый налог: {starting_tax}%\n")
         print_slowly(f"Деньги: {money} ; Налог {starting_tax} %\n")
+
     def stat():
-        global money, soldier, weapons, armor, starting_tax, armor_level_user, monthdict
-        for month in monthdict:
-            print_slowly(f"Месяц {month}\n")
-            print_slowly("___________________\n")
-            print_slowly(f"Деньги:{money}; Налог {starting_tax}%\n")
-            print_slowly(f"Людской ресурс:{men_power}\n")
-            print_slowly(f"Солдаты:{soldier}\n")
-            print_slowly(f"Оружие:{weapons}\n")
-            print_slowly(f"Брони:{armor}, Уровень брони {armor_level_user}\n")
-            print_slowly("___________________\n")
-            print_slowly("Нажмите Enter, чтобы продолжить")
-            input(".\n")
-            cls()
+        global money, soldier, weapons, armor, starting_tax, armor_level_user
+        # for month in monthdict:
+            # print_slowly(f"Месяц {month}\n")
+        print_slowly("___________________\n")
+        print_slowly(f"Деньги:{money}; Налог {starting_tax}%\n")
+        print_slowly(f"Людской ресурс:{men_power}\n")
+        print_slowly(f"Солдаты:{soldier}\n")
+        print_slowly(f"Оружие:{weapons}\n")
+        print_slowly(f"Брони:{armor}, Уровень брони {armor_level_user}\n")
+        print_slowly("___________________\n")
+        print_slowly("Нажмите Enter, чтобы продолжить")
+        input(".\n")
+        cls()
+
 
 class Economic:
     def shop():
@@ -221,6 +229,7 @@ class Economic:
                 cls()
                 print_slowly("Закупки отменены")
                 break
+
     def tax():
         global money, money_lost, starting_tax, insurrection_points
         if starting_tax >= 35:
@@ -237,144 +246,147 @@ class Economic:
                     print_slowly("\nТребование людей снизить налоги (y/n)")
                     response = input(":")
                     if response.lower() == "y":
-                        suppress_insurrection()
+                        Main.suppress_insurrection()
                     else:
                         exit()
         else:
             while starting_tax <= 100:
-                print_slowly("Хотите повысить налог на 5%? (y/n)")
+                cls()
+                print_slowly("Хотите повысить налог на 5%? (y/n) (/)")
                 response = input(":")
                 if response.lower() == "y":
                     starting_tax += 5
                     if random.randint(0, 10) <= 4:
-                        money_lost += 2000 / 100 * starting_tax
+                        money_lost += 5000 / 100 * starting_tax
                         money -= money_lost
                         print_slowly(f"Вы потеряли {money_lost} денег, но повысили налог.")
                         print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
-                        money += 2000 / 100 * starting_tax
-                        print_slowly(f"\nДеньги с налога {2000 / 100 * starting_tax}")
+                        money += 5000 / 100 * starting_tax
+                        print_slowly(f"\nДеньги с налога {5000 / 100 * starting_tax}")
                         print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
                         break
                     else:
                         print("Вы повысили налог и ничего не потеряли.")
-                        money += 2000 / 100 * starting_tax
-                        print_slowly(f"Деньги с налога {2000 / 100 * starting_tax}")
+                        money += 5000 / 100 * starting_tax
+                        print_slowly(f"Деньги с налога {5000 / 100 * starting_tax}")
                         print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
                         break
                 elif response.lower() == "n":
-                    money += 2000 / 100 * starting_tax
-                    print_slowly(f"Деньги с налога {2000 / 100 * starting_tax}")
+                    money += 5000 / 100 * starting_tax
+                    print_slowly(f"Деньги с налога {5000 / 100 * starting_tax}")
                     print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
                     break
                 elif response.lower() == "/":
-                    print_slowly(
-                        "Подсказка: Это может привести к безпорядкам, потере денег и всего, но повысит ежемесячный доход")
-                    cls()
+                    print_slowly("Подсказка: Это может привести к безпорядкам, потере денег и всего, но повысит ежемесячный доход\n")
                 elif starting_tax == 100:
                     print_slowly("Максимальный налог?")
-                    money += 2000 / 100 * starting_tax
-                    print_slowly(f"Деньги с налога {2000 / 100 * starting_tax}")
+                    money += 5000 / 100 * starting_tax
+                    print_slowly(f"Деньги с налога {5000 / 100 * starting_tax}")
                     print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
                     break
                 else:
                     return
 
+
 class War_power:
     def training_soldier_stat():
-            print_slowly("___________________\n")
-            print_slowly(f"Деньги: {money}\n")
-            print_slowly(f"Людской ресурс: {men_power}\n")
-            print_slowly(f"Солдаты:{soldier}\n")
-            print_slowly(f"Оружие: {weapons}\n")
-            print_slowly(f"Броня: {armor}, Уровень брони {armor_level_user}\n")
-            print_slowly("___________________\n")
+        print_slowly("___________________\n")
+        print_slowly(f"Деньги: {money}\n")
+        print_slowly(f"Людской ресурс: {men_power}\n")
+        print_slowly(f"Солдаты:{soldier}\n")
+        print_slowly(f"Оружие: {weapons}\n")
+        print_slowly(f"Броня: {armor}, Уровень брони {armor_level_user}\n")
+        print_slowly("___________________\n")
+
     def training_soldier():
-            global men_power, soldier, armor, weapons, money
+        global men_power, soldier, armor, weapons, money
 
-            while men_power == 0 or soldier == 0 or armor == 0 or weapons == 0 or money == 0:
-                print_slowly("Один или более из необходимых требований отсутствует\n")
-                Training_soldier.training_soldier_stat()
-                print_slowly("Нажмите Enter, чтобы продолжить")
-                input(".\n")
-                break
-
+        while men_power == 0 or soldier == 0 or armor == 0 or weapons == 0 or money == 0:
+            print_slowly("Один или более из необходимых требований отсутствует\n")
             Training_soldier.training_soldier_stat()
-            print_slowly("Цена обучения 1 солдата: 1 Оружие, 1 Броня, 1 Людской ресурс\n")
+            print_slowly("Нажмите Enter, чтобы продолжить")
+            input(".\n")
+            break
 
-            while True:
-                print_slowly("Вы хотите обучить солдат? (Y/N")
-                choice = input(")")
+        Training_soldier.training_soldier_stat()
+        print_slowly("Цена обучения 1 солдата: 1 Оружие, 1 Броня, 1 Людской ресурс\n")
 
-                if choice.lower() == "y":
-                    cls()
-                    Training_soldier.training_soldier_stat()
-                    print_slowly("Цена обучения 1 солдата: 1 Оружие, 1 Броня, 1 Людской ресурс\n")
+        while True:
+            print_slowly("Вы хотите обучить солдат? (Y/N")
+            choice = input(")")
 
-                    while True:
-                        print_slowly("Сколько солдат вы хотите обучить?")
-                        amount_soldier_str = input(":")
-                        try:
-                            amount_soldier = int(amount_soldier_str)
-                            if amount_soldier > int(weapons) or amount_soldier > int(armor) or amount_soldier > int(
-                                    men_power):
-                                cls()
-                                Training_soldier.training_soldier_stat()
-                                print_slowly(f"Требуется больше ресурсов для обучения {amount_soldier} солдат.\n")
-                                continue
-                            else:
-                                cls()
-                                print_slowly(f"Вы обучили {amount_soldier} солдат\n")
-                                weapons -= amount_soldier
-                                armor -= amount_soldier
-                                men_power -= amount_soldier
-                                soldier += amount_soldier
-                                Training_soldier.training_soldier_stat()
-                                break
-                        except ValueError:
+            if choice.lower() == "y":
+                cls()
+                Training_soldier.training_soldier_stat()
+                print_slowly("Цена обучения 1 солдата: 1 Оружие, 1 Броня, 1 Людской ресурс\n")
+
+                while True:
+                    print_slowly("Сколько солдат вы хотите обучить?")
+                    amount_soldier_str = input(":")
+                    try:
+                        amount_soldier = int(amount_soldier_str)
+                        if amount_soldier > int(weapons) or amount_soldier > int(armor) or amount_soldier > int(
+                                men_power):
                             cls()
-                            print_slowly("Ошибка: Введите целое число.\n")
-                elif choice.lower() == "n":
-                    exit(0)
-                else:
-                    cls()
-                    print("Ошибка: Введите 'Y' или 'N'.")
-                    continue
+                            Training_soldier.training_soldier_stat()
+                            print_slowly(f"Требуется больше ресурсов для обучения {amount_soldier} солдат.\n")
+                            continue
+                        else:
+                            cls()
+                            print_slowly(f"Вы обучили {amount_soldier} солдат\n")
+                            weapons -= amount_soldier
+                            armor -= amount_soldier
+                            men_power -= amount_soldier
+                            soldier += amount_soldier
+                            Training_soldier.training_soldier_stat()
+                            break
+                    except ValueError:
+                        cls()
+                        print_slowly("Ошибка: Введите целое число.\n")
+            elif choice.lower() == "n":
+                exit(0)
+            else:
+                cls()
+                print("Ошибка: Введите 'Y' или 'N'.")
+                continue
+
     def enlist_men_power():
-            global men_power, money
-            while True:
-                print_slowly("Цена призыва 1 людского ресурса: 2000")
-                print_slowly("\nНанять солдат? (Y/N)")
-                men_power_enlist = input(":")
-                if men_power_enlist.lower() == "y":
-                    print_slowly("\nСколько людей вы хотите призвать?")
-                    count_men_power_enlist = input(":")
-                    if not count_men_power_enlist.isdigit():
-                        cls()
-                        print_slowly("Ошибка: Введите положительное целое число.\n")
-                        continue
-                    count_men_power_enlist = int(count_men_power_enlist)
-                    if count_men_power_enlist * 2000 > money:
-                        cls()
-                        print_slowly("Вам отказано.\n")
-                        print_slowly("Недостаточно средств.\n")
-                        print_slowly("Попробуйте в следующем месяце.\n")
-                    else:
-                        cls()
-                        money -= count_men_power_enlist * 2000
-                        men_power += count_men_power_enlist
-                        print(count_men_power_enlist)
-                        print_slowly("Людей успешно призваны.")
-                    break
-                elif men_power_enlist.lower() == "n":
+        global men_power, money
+        while True:
+            print_slowly("Цена призыва 1 людского ресурса: 2000")
+            print_slowly("\nНанять солдат? (Y/N)")
+            men_power_enlist = input(":")
+            if men_power_enlist.lower() == "y":
+                print_slowly("\nСколько людей вы хотите призвать?")
+                count_men_power_enlist = input(":")
+                if not count_men_power_enlist.isdigit():
                     cls()
-                    print_slowly("Отмена призыва людей.")
-                    break
+                    print_slowly("Ошибка: Введите положительное целое число.\n")
+                    continue
+                count_men_power_enlist = int(count_men_power_enlist)
+                if count_men_power_enlist * 2000 > money:
+                    cls()
+                    print_slowly("Вам отказано.\n")
+                    print_slowly("Недостаточно средств.\n")
+                    print_slowly("Попробуйте в следующем месяце.\n")
                 else:
                     cls()
-                    print_slowly("Ошибка: Введите 'Y' или 'N'.")
-                    continue
+                    money -= count_men_power_enlist * 2000
+                    men_power += count_men_power_enlist
+                    print(count_men_power_enlist)
+                    print_slowly("Людей успешно призваны.")
+                break
+            elif men_power_enlist.lower() == "n":
+                cls()
+                print_slowly("Отмена призыва людей.")
+                break
+            else:
+                cls()
+                print_slowly("Ошибка: Введите 'Y' или 'N'.")
+                continue
+
     def armor_upgrade():
-        global money, armor_level , armor_level_user
+        global money, armor_level, armor_level_user
         armor_upgrade_price = armor_level * 2000
         while True:
             print_slowly("Вы хотите улучшить Броню? (Y/N")
@@ -382,7 +394,8 @@ class War_power:
             if armor_upgrade_option.lower() == "y":
                 cls()
                 War_power.training_soldier_stat()
-                print_slowly(f"Вы точно хотите улчучшить Броню до {armor_level_user+1} уровня за {armor_upgrade_price}?  (Y/N")
+                print_slowly(
+                    f"Вы точно хотите улчучшить Броню до {armor_level_user + 1} уровня за {armor_upgrade_price}?  (Y/N")
                 armor_upgrade_YN = input(")\n")
                 if armor_upgrade_YN.lower() == "y":
                     cls()
@@ -408,6 +421,7 @@ class War_power:
                 cls()
                 print_slowly("Ошибка: Введите 'Y' или 'N'.\n")
                 continue
+
 
 class War:
     def AI_Attack_battle():
@@ -466,6 +480,7 @@ class War:
             exit()
         else:
             print_slowly("Вы выиграли битву\n")
+
     def AI_Attack():
         global soldier_attack_power_AI, soldier_defense_power
         if soldier_attack_power_AI <= soldier_defense_power / 2:
@@ -473,7 +488,6 @@ class War:
         else:
             print_slowly("Враг нападает\n")
             battle()
-
 
 
 print_slowly("____________________________\n")
@@ -488,4 +502,9 @@ print_slowly(input("Нажмите Enter, чтобы продолжить.\n"))
 
 cls()
 
-War_power.armor_upgrade()
+print_slowly(f"{monthdict[0]}\n")
+Main.stat()
+# print_slowly()
+Economic.tax()
+print_slowly(input("\nНажмите Enter, чтобы продолжить.\n"))
+# Economic.shop()
