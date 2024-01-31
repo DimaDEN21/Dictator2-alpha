@@ -31,23 +31,29 @@ armor_AI = 0
 def print_slowly(text):
     for char in text:
         print(char, end='', flush=True)
-        time.sleep(0.02)  # было  0.02
+        time.sleep(0)  # было  0.02
 
-
-def cls():
-    os.system('cls')
+cls = lambda: os.system('cls')
 
 
 class Main:
-    def options():
-        def optins_add():
-            print_slowly("Возможные решения:")
-            print_slowly("\nПокупка снаряжения 1")
-            print_slowly("\nПовышение налога 2")
-            print_slowly("\nПризвать людей в солдат 3")
-            print_slowly("\nЗакрыть 4")
+    def options_call():
+        opt_call = str
+        print_slowly("\nНажмите Enter, чтобы продолжить (/ для вызова решений)")
+        opt_call = input(".\n")
 
-        optins_add()
+        if opt_call == "/":
+            cls()
+            Main.options()
+        else:
+            cls()
+    def options():
+        print_slowly("""Возможные решения:
+Покупка снаряжения 1
+Повышение налога 2
+Призвать людей в солдат 3   
+Закрыть 4""")
+
         while True:
             print_slowly("\nВыберите вариант, соответствующий вашему выбору: (/")
             option = input(")")
@@ -61,7 +67,7 @@ class Main:
             elif option == "1":
                 cls()
                 print_slowly("Покупка снаряжения\n")
-                shop()
+                Economic.shop()
                 break
             elif option == "2":
                 cls()
@@ -75,41 +81,24 @@ class Main:
                 break
             elif option == "4":
                 cls()
-                print_slowly("Закрыто\n")
-                return
+                print_slowly("Решения закрыты\n")
+                break
             else:
                 cls()
                 print_slowly("Неверный выбор. Пожалуйста, введите корректное значение.\n")
-                optins_add()
-
-    def suppress_insurrection():
-        global money, starting_tax, soldier
-
-        print_slowly("____________________________\n")
-        print_slowly("Вы согласились на условия народа!\n")
-        soldiers_cost = 100
-
-        money -= soldiers_cost * soldier
-        starting_tax -= 10
-
-        print_slowly(f"Вы потратили {soldiers_cost * soldier} денег на {soldier} солдат.\n")
-        print_slowly(f"Налог был снижен на 10%. Новый налог: {starting_tax}%\n")
-        print_slowly(f"Деньги: {money} ; Налог {starting_tax} %\n")
+                Main.options()
 
     def stat():
         global money, soldier, weapons, armor, starting_tax, armor_level_user
-        # for month in monthdict:
-            # print_slowly(f"Месяц {month}\n")
-        print_slowly("___________________\n")
-        print_slowly(f"Деньги:{money}; Налог {starting_tax}%\n")
-        print_slowly(f"Людской ресурс:{men_power}\n")
-        print_slowly(f"Солдаты:{soldier}\n")
-        print_slowly(f"Оружие:{weapons}\n")
-        print_slowly(f"Брони:{armor}, Уровень брони {armor_level_user}\n")
-        print_slowly("___________________\n")
-        print_slowly("Нажмите Enter, чтобы продолжить")
-        input(".\n")
-        cls()
+        print_slowly(f"""___________________
+Деньги:{money}; Налог {starting_tax}%
+Людской ресурс:{men_power}
+Солдаты:{soldier}
+Оружие:{weapons}
+Брони:{armor}, Уровень брони {armor_level_user}
+___________________""")
+
+        Main.options_call()
 
 
 class Economic:
@@ -230,6 +219,20 @@ class Economic:
                 print_slowly("Закупки отменены")
                 break
 
+    def suppress_insurrection():
+        global money, starting_tax, soldier
+
+        print_slowly("____________________________\n")
+        print_slowly("Вы согласились на условия народа!\n")
+        soldiers_cost = 100
+
+        money -= soldiers_cost * soldier
+        starting_tax -= 10
+
+        print_slowly(f"Вы потратили {soldiers_cost * soldier} денег на {soldier} солдат.\n")
+        print_slowly(f"Налог был снижен на 10%. Новый налог: {starting_tax}%\n")
+        print_slowly(f"Деньги: {money} ; Налог {starting_tax} %\n")
+
     def tax():
         global money, money_lost, starting_tax, insurrection_points
         if starting_tax >= 35:
@@ -242,8 +245,8 @@ class Economic:
                 elif insurrection_points == 3:
                     print_slowly("С людьми что-то не так!!!")
                 elif insurrection_points >= 4:
-                    print_slowly("Восстание? Это конец?")
-                    print_slowly("\nТребование людей снизить налоги (y/n)")
+                    print_slowly("""Восстание? Это конец?
+Требование людей снизить налоги (y/n)""")
                     response = input(":")
                     if response.lower() == "y":
                         Main.suppress_insurrection()
@@ -266,7 +269,7 @@ class Economic:
                         print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
                         break
                     else:
-                        print("Вы повысили налог и ничего не потеряли.")
+                        print_slowly("Вы повысили налог и ничего не потеряли.")
                         money += 5000 / 100 * starting_tax
                         print_slowly(f"Деньги с налога {5000 / 100 * starting_tax}")
                         print_slowly(f"\nДеньги: {money} ; Налог {starting_tax}, %")
@@ -287,16 +290,15 @@ class Economic:
                 else:
                     return
 
-
 class War_power:
     def training_soldier_stat():
-        print_slowly("___________________\n")
-        print_slowly(f"Деньги: {money}\n")
-        print_slowly(f"Людской ресурс: {men_power}\n")
-        print_slowly(f"Солдаты:{soldier}\n")
-        print_slowly(f"Оружие: {weapons}\n")
-        print_slowly(f"Броня: {armor}, Уровень брони {armor_level_user}\n")
-        print_slowly("___________________\n")
+        print_slowly(f"""___________________
+Деньги: {money}
+Людской ресурс: {men_power}")
+Солдаты:{soldier}")
+Оружие: {weapons}")
+Броня: {armor}, Уровень брони {armor_level_user}")
+___________________\n""")
 
     def training_soldier():
         global men_power, soldier, armor, weapons, money
@@ -438,9 +440,9 @@ class War:
             soldier_attack_power_AI += soldier_attack_power_bonus  # Apply attack bonus
 
         damage = max(soldier_attack_power_AI - soldier_defense_power, 1)  # Calculate damage with a minimum of 1
-        print_slowly(f"Солдаты врага до боя: {soldier_AI}\n")
-        print_slowly(f"Солдаты до боя: {soldier}\n")
-        print_slowly("Нажмите Enter, чтобы продолжить")
+        print_slowly(f"""Солдаты врага до боя: {soldier_AI}
+Солдаты до боя: {soldier}
+Нажмите Enter, чтобы продолжить""")
         input(".")
         cls()
         soldier -= damage / 4
@@ -456,10 +458,10 @@ class War:
             soldier_AI -= damage
             soldier = round(soldier)
             soldier_AI = round(soldier_AI)
-            print_slowly("У вас больше защиты чем атаки у врага\n")
-            print_slowly("Снижение атаки врага в 2 раза\n")
-            print_slowly(f"Солдаты врага после боя: {soldier_AI}\n")
-            print_slowly(f"Солдаты после боя: {soldier}\n")
+            print_slowly(f"""У вас больше защиты чем атаки у врага
+Снижение атаки врага в 2 раза
+Солдаты врага после боя: {soldier_AI}
+Солдаты после боя: {soldier}""")
         else:
             damage = max(soldier_attack_power_AI - soldier_defense_power, 1)  # Calculate damage with a minimum of 1
             print_slowly(f"Солдаты врага до боя: {soldier_AI}\n")
@@ -489,22 +491,22 @@ class War:
             print_slowly("Враг нападает\n")
             battle()
 
+#Предисловие
 
-print_slowly("____________________________\n")
-print_slowly("Обучение:\n")
-print_slowly("Управление: (Y=да;N=нет; 1,2,3... варианты ответа; Если в конце текста есть (/) это значит что если ввести / появитса подсказка)\n")
-print_slowly("Возможности: управление капиталом, армией и налогами.\n")
-print_slowly("Препятствия: Внутренние проблемы и ВРАГ который будет нападать каждый месяц в течение года.\n")
-print_slowly("Цель: выдержать все атаки врага и провести контр акату.\n")
-print_slowly("УДАЧИ.\n")
-print_slowly("____________________________\n")
-print_slowly(input("Нажмите Enter, чтобы продолжить.\n"))
+print_slowly(f"""____________________________
+Обучение:
+Управление: (Y=да;N=нет; для варианта ответа 1,2,3...; Если в конце текста есть (/) это значит что если ввести / появитса подсказка)
+Возможности: управление капиталом, армией и налогами.
+Препятствия: Внутренние проблемы и ВРАГ который будет нападать каждый месяц в течение года.
+Цель: выдержать все атаки врага и провести контр акату.
+УДАЧИ.
+____________________________\n""")
+Main.options_call()
 
-cls()
+#Месяц 1
+print_slowly(f"{monthdict[0]}\n") #Год и название месяца
+Main.stat() #Статистика
 
-print_slowly(f"{monthdict[0]}\n")
-Main.stat()
-# print_slowly()
-Economic.tax()
-print_slowly(input("\nНажмите Enter, чтобы продолжить.\n"))
+# Economic.tax()
+Main.options_call()
 # Economic.shop()
